@@ -1,0 +1,83 @@
+<!-- This program will use an object oriented mindset to create a simple basket ball animation-->
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Scoring a Basket</title>
+
+<style>
+    body {
+        margin: 0;
+    }
+</style>
+
+</head>
+
+<body>
+
+    <canvas id="canv">
+
+    </canvas>
+
+    <script type="module">
+
+        import SceneManager from "./engine/scene-manager.js"
+        import CourtScene from "./game/scenes/court-scene.js"
+        import ExplosionScene from "./game/scenes/explosion-scene.js"
+        import Basketball from "./game/prefabs/basketball.js"
+        import TrashCan from "./game/prefabs/trash-can.js"
+        import RedParticle from "./game/prefabs/red-particle.js"
+        import YellowParticle from "./game/prefabs/yellow-particle.js"
+        import Explosion from "./game/prefabs/explosion.js"
+        import MoveComponent from "./game/components/move-component.js"
+        import DrawComponent from "./game/components/draw-component.js"
+        import ChangeSceneComponent from "./game/components/change-scene-component.js"
+        //import GameObject from "./engine/game-object.js"
+        import Scene from "./engine/scene.js"
+
+        let canvas = document.getElementById("canv");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let ctx = canvas.getContext("2d");
+        
+        function clear(){
+            ctx.fillStyle = "black";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        
+        
+        
+        //let bball = GameObject.deserialize(Basketball, allComponents);//new Basketball(100, 500, 50, 50, "NE");
+        //let tcan = GameObject.deserialize(Basketball, [DrawComponent]]);//new TrashCan(1200, 500, 140, 100);
+
+        //courtScene.addChild(bball);
+        //courtScene.addChild(tcan);
+
+        let allComponents = [ChangeSceneComponent, MoveComponent, DrawComponent];
+        let allPrefabs = [Basketball, TrashCan, RedParticle, YellowParticle, Explosion];
+
+        SceneManager.allComponents = allComponents;
+        SceneManager.allPrefabs = allPrefabs;
+        SceneManager.allScenes.push(CourtScene);
+        SceneManager.allScenes.push(ExplosionScene);
+        SceneManager.setCurrentScene("CourtScene");
+
+        //let explosionScene = Scene.deserialize(ExplosionScene, allComponents, allPrefabs);
+
+        function gameLoop(){
+            clear();
+            SceneManager.currentScene.draw(ctx);
+            SceneManager.currentScene.update();
+        }
+
+        setInterval(gameLoop, 1000/60);
+
+    </script>
+
+</body>
+
+</html>
